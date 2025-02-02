@@ -15,7 +15,7 @@ import edu.cwru.sepia.util.Direction;                                       // d
 
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -154,6 +154,21 @@ public class ScriptedAgent
         // TODO: discover the id of the gold resource! Check out the documentation for StateView:
         // http://engr.case.edu/ray_soumya/Sepia/html/javadoc/edu/cwru/sepia/environment/model/state/State-StateView.html
         Integer goldResourceNodeId = null;
+
+        // Get all gold mines directly
+        List<ResourceView> goldMines = state.getResourceNodes(ResourceNode.Type.GOLD_MINE);
+
+        if (!goldMines.isEmpty()) {
+            goldResourceNodeId = goldMines.get(0).getID(); // Store the first gold mine found
+        }
+
+        // Debug printout to confirm gold resource discovery
+        if (goldResourceNodeId == null) {
+            System.err.println("[ERROR] No gold resource found in the game!");
+        } 
+        else {
+            System.out.println("Gold Resource ID: " + goldResourceNodeId);
+        }
 
         // set our fields
         this.setMyUnitId(myUnitIds.iterator().next());
